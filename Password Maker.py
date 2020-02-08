@@ -1,92 +1,34 @@
-#Made by Leonardo Martelli Oliveira (leomartellio)
-import string
-import random
-from random import randint
+import PasswordMethods
 
 print('==x==' * 8)
-print(' WELCOME TO PASSWORDM4KER')
+print(' WELCOME TO PASSWORD M4KER')
+print('==x==' * 8)
+print('You must always answer with [\'YES\'] OR [\'NO\'] to the binary questions!')
 print('==x==' * 8)
 
-typeof = char = 0
-charlist = list()
-numchar = int(input('Character Nº: '))
 
-if numchar <= 0:
+content = list()
+
+character_number = int(input('Character Nº: '))
+if character_number <= 0:
     print('Please type a valid number!')
-    numchar = int(input('Character Nº: '))
+    character_number = int(input('Character Nº: '))
 
-letterchoice = str(input('Only Numbers? ')).strip().upper()[0]
-if letterchoice not in 'YN':
-    print('Please type a valid answer, YES or NO.')
-    letterchoice = str(input('Only Numbers? ')).strip().upper()[0]
+only_numbers = PasswordMethods.to_bool(str(input('Only Numbers? ')).strip().upper()[0])
 
-if letterchoice == 'N':
-    upperchar = str(input('With Uppercase? ')).strip().upper()[0]
-    if upperchar not in 'YN':
-        print('Please type a valid answer, YES or NO.')
-        upperchar = str(input('With Uppercase? ')).strip().upper()[0]
-
-    num = str(input('With Numbers? ')).strip().upper()[0]
-    if num not in 'YN':
-        print('Please type a valid answer, YES or NO.')
-        num = str(input('With Numbers? ')).strip().upper()[0]
-
-    if upperchar == 'Y':
-        upperchar = True
-    else:
-        upperchar = False
-    if num == 'Y':
-        num = True
-    else:
-        num = False
-    if upperchar is True and num is True:
-        for c in range(0, numchar):
-            typeof = randint(1, 3)
-
-            if typeof == 1:
-                char = random.choice(string.ascii_lowercase)
-            elif typeof == 2:
-                char = random.choice(string.ascii_uppercase)
-            else:
-                char = randint(0, 9).__str__()
-
-            charlist.append(char)
-
-    elif upperchar is True and num is False:
-        for c in range(0, numchar):
-            typeof = randint(1, 2)
-
-            if typeof == 1:
-                char = random.choice(string.ascii_lowercase)
-            elif typeof == 2:
-                char = random.choice(string.ascii_uppercase)
-            charlist.append(char)
-
-    elif upperchar is False and num is True:
-        for c in range(0, numchar):
-            typeof = randint(1, 2)
-
-            if typeof == 1:
-                char = random.choice(string.ascii_lowercase)
-            elif typeof == 2:
-                char = randint(0, 9).__str__()
-
-            charlist.append(char)
-
-    elif upperchar is False and num is False:
-        for c in range(0, numchar):
-            char = random.choice(string.ascii_lowercase)
-
-            charlist.append(char)
+if only_numbers:
+    content.append(PasswordMethods.CharacterType.NUMBER)
 else:
-    for c in range(0,numchar):
-        char = randint(0,9).__str__()
-        charlist.append(char)
+    if PasswordMethods.to_bool(str(input('With Uppercase? ')).strip().upper()[0]):
+        content.append(PasswordMethods.CharacterType.UPPERCASE)
+    if PasswordMethods.to_bool(str(input('With Lowercase? ')).strip().upper()[0]):
+        content.append(PasswordMethods.CharacterType.LOWERCASE)
+    if PasswordMethods.to_bool(str(input('With Numbers? ')).strip().upper()[0]):
+        content.append(PasswordMethods.CharacterType.NUMBER)
+    
 
-passw = ''.join(charlist)
-
-print(passw)
+print(f'\n{PasswordMethods.create_password(character_number, content)}\n')
 
 print('==x==' * 9)
-print(' THANKS FOR USING THE PASSWORDM4KER')
+print(' THANKS FOR USING THE PASSWORD M4KER')
 print('==x==' * 9)
