@@ -6,7 +6,6 @@ print('==x==' * 8)
 print('You must always answer with [\'YES\'] OR [\'NO\'] to the binary questions!')
 print('==x==' * 8)
 
-
 content = list()
 
 character_number = int(input('Character Nº: '))
@@ -25,7 +24,6 @@ else:
         content.append(PasswordMethods.CharacterType.LOWERCASE)
     if PasswordMethods.to_bool(str(input('With Numbers? ')).strip().upper()[0]):
         content.append(PasswordMethods.CharacterType.NUMBER)
-    
 
 print(f'\n{PasswordMethods.create_password(character_number, content)}\n')
 
