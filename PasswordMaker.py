@@ -1,32 +1,69 @@
-import PasswordMethods
+from typing import Type
 
-print('==x==' * 8)
-print(' WELCOME TO PASSWORD M4KER')
-print('==x==' * 8)
-print('You must always answer with [\'YES\'] OR [\'NO\'] to the binary questions!')
-print('==x==' * 8)
+import PasswordTools
+from enum import Enum
 
-content = list()
 
-character_number = int(input('Character Nº: '))
-if character_number <= 0:
-    print('Please type a valid number!')
-    character_number = int(input('Character Nº: '))
+class CharacterType(Enum):
+    UPPERCASE = 0
+    LOWERCASE = 1
+    NUMBER = 2
 
-only_numbers = PasswordMethods.to_bool(str(input('Only Numbers? ')).strip().upper()[0])
 
-if only_numbers:
-    content.append(PasswordMethods.CharacterType.NUMBER)
-else:
-    if PasswordMethods.to_bool(str(input('With Uppercase? ')).strip().upper()[0]):
-        content.append(PasswordMethods.CharacterType.UPPERCASE)
-    if PasswordMethods.to_bool(str(input('With Lowercase? ')).strip().upper()[0]):
-        content.append(PasswordMethods.CharacterType.LOWERCASE)
-    if PasswordMethods.to_bool(str(input('With Numbers? ')).strip().upper()[0]):
-        content.append(PasswordMethods.CharacterType.NUMBER)
+class PasswordMaker:
 
-print(f'\n{PasswordMethods.create_password(character_number, content)}\n')
+    def __init__(self):
+        self.content = list()
+        self.character_number = Type[int]
 
-print('==x==' * 9)
-print(' THANKS FOR USING THE PASSWORD M4KER')
-print('==x==' * 9)
+    # creating password method
+
+    def create_password(self):
+        self.set_content()
+        self.set_character_number()
+        return ''.join(self.get_characters())
+
+    # setting methods
+
+    def set_content(self):
+        if PasswordTools.ask_only_numbers():
+            self.content.append(CharacterType.NUMBER)
+        else:
+            if PasswordTools.ask_uppercase():
+                self.content.append(CharacterType.UPPERCASE)
+            if PasswordTools.ask_lowercase():
+                self.content.append(CharacterType.LOWERCASE)
+            if PasswordTools.ask_number():
+                self.content.append(CharacterType.NUMBER)
+
+    def set_character_number(self):
+        self.character_number = int(input('Character Nº: '))
+
+    # getting methods
+
+    def get_character(self):
+        return self.switch(self.content[PasswordTools.get_position(len(self.content) - 1)])
+
+    def get_characters(self):
+        characters = []
+
+        for c in range(0, self.character_number):
+            characters.append(self.get_character())
+        return characters
+
+    # static methods
+
+    @staticmethod
+    def switch(argument):
+        if argument is CharacterType.UPPERCASE:
+            return PasswordTools.get_letter().upper()
+        elif argument is CharacterType.LOWERCASE:
+            return PasswordTools.get_letter()
+        else:
+            return PasswordTools.get_number()
+
+
+password_maker = PasswordMaker()
+
+
+print(password_maker.create_password())
